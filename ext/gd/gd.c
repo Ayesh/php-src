@@ -1490,6 +1490,8 @@ static int _php_image_type (char data[12])
 		return PHP_GDIMG_TYPE_GIF;
 	} else if (!memcmp(data, php_sig_bmp, sizeof(php_sig_bmp))) {
 		return PHP_GDIMG_TYPE_BMP;
+	} else if (!memcmp(data, php_sig_avif, sizeof(php_sig_avif))) {
+		return PHP_GDIMG_TYPE_AVIF;
 	} else if(!memcmp(data, php_sig_riff, sizeof(php_sig_riff)) && !memcmp(data + sizeof(php_sig_riff) + sizeof(uint32_t), php_sig_webp, sizeof(php_sig_webp))) {
 		return PHP_GDIMG_TYPE_WEBP;
 	}
