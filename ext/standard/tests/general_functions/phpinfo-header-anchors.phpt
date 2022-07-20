@@ -4,8 +4,7 @@ phpinfo() with clickable anchor tags
 This tests for the HTML anchor tags presence in phpinfo() outputs.
 The --POST-- section is used to force using CGI SAPI instead of the
 default CLI SAPI.
---POST--
-a=b
+--CGI--
 --FILE--
 <?php
 phpinfo();
