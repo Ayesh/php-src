@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: be2670aed28449ce54657864fc70f4658e5beb66 */
+ * Stub hash: 6c96c0fe741f9f9f9c86b9d3f18b4ecf860cf000 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_preg_match, 0, 2, MAY_BE_LONG|MAY_BE_FALSE)
 	ZEND_ARG_TYPE_INFO(0, pattern, IS_STRING, 0)
@@ -91,6 +91,11 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE_END
 };
 
+
+static const zend_function_entry class_PregException_methods[] = {
+	ZEND_FE_END
+};
+
 static void register_php_pcre_symbols(int module_number)
 {
 	REGISTER_LONG_CONSTANT("PREG_PATTERN_ORDER", PREG_PATTERN_ORDER, CONST_CS | CONST_PERSISTENT);
@@ -113,4 +118,14 @@ static void register_php_pcre_symbols(int module_number)
 	REGISTER_LONG_CONSTANT("PCRE_VERSION_MAJOR", PCRE2_MAJOR, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("PCRE_VERSION_MINOR", PCRE2_MINOR, CONST_CS | CONST_PERSISTENT);
 	REGISTER_BOOL_CONSTANT("PCRE_JIT_SUPPORT", PHP_PCRE_JIT_SUPPORT, CONST_CS | CONST_PERSISTENT);
+}
+
+static zend_class_entry *register_class_PregException(zend_class_entry *class_entry_Exception)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "PregException", class_PregException_methods);
+	class_entry = zend_register_internal_class_ex(&ce, class_entry_Exception);
+
+	return class_entry;
 }

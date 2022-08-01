@@ -145,3 +145,7 @@ function preg_grep(string $pattern, array $array, int $flags = 0): array|false {
 function preg_last_error(): int {}
 
 function preg_last_error_msg(): string {}
+
+class PregException extends Exception
+{
+}

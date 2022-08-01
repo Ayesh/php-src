@@ -25,6 +25,8 @@
 
 #include "ext/standard/php_string.h"
 
+#include <zend_exceptions.h>
+
 #define PREG_PATTERN_ORDER			1
 #define PREG_SET_ORDER				2
 #define PREG_OFFSET_CAPTURE			(1<<8)
@@ -429,6 +431,8 @@ static PHP_MINFO_FUNCTION(pcre)
 }
 /* }}} */
 
+PHPAPI zend_class_entry *php_pcre_exception_ce;
+
 /* {{{ PHP_MINIT_FUNCTION(pcre) */
 static PHP_MINIT_FUNCTION(pcre)
 {
@@ -445,6 +449,8 @@ static PHP_MINIT_FUNCTION(pcre)
 	REGISTER_INI_ENTRIES();
 
 	php_pcre_version = _pcre2_config_str(PCRE2_CONFIG_VERSION);
+
+	php_pcre_exception_ce = register_class_PregException(zend_ce_exception);
 
 	register_php_pcre_symbols(module_number);
 
