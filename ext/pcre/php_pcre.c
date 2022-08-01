@@ -29,6 +29,7 @@
 #define PREG_SET_ORDER				2
 #define PREG_OFFSET_CAPTURE			(1<<8)
 #define PREG_UNMATCHED_AS_NULL		(1<<9)
+#define PREG_THROW_ON_ERROR			(1<<10)
 
 #define	PREG_SPLIT_NO_EMPTY			(1<<0)
 #define PREG_SPLIT_DELIM_CAPTURE	(1<<1)

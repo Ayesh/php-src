@@ -19,6 +19,11 @@ const PREG_SET_ORDER = UNKNOWN;
 const PREG_OFFSET_CAPTURE = UNKNOWN;
 /**
  * @var int
+ * @cvalue PREG_THROW_ON_ERROR
+ */
+const PREG_THROW_ON_ERROR = UNKNOWN;
+/**
+ * @var int
  * @cvalue PREG_UNMATCHED_AS_NULL
  */
 const PREG_UNMATCHED_AS_NULL = UNKNOWN;
