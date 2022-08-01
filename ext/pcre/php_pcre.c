@@ -55,6 +55,8 @@ char *php_pcre_version;
 
 #include "php_pcre_arginfo.h"
 
+zend_class_entry *php_preg_exception_ce;
+
 struct _pcre_cache_entry {
 	pcre2_code *re;
 	uint32_t preg_options;
@@ -104,6 +106,11 @@ static void php_pcre_free_char_table(zval *data)
 	pefree(ptr, 1);
 }/*}}}*/
 
+static void preg_throw_exception(const char *docref, int error_code)
+{
+zend_throw_exception(php_preg_exception_ce, docref, error_code);
+}
+
 static void pcre_handle_exec_error(int pcre_code) /* {{{ */
 {
 	int preg_code = 0;
@@ -137,6 +144,12 @@ static void pcre_handle_exec_error(int pcre_code) /* {{{ */
 	}
 
 	PCRE_G(error_code) = preg_code;
+	preg_throw_exception('test', 5);
+	//if (!(options & PHP_JSON_THROW_ON_ERROR)) {
+	//		PCRE_G(error_code) = preg_code;
+	// } else {
+
+	//}
 }
 /* }}} */
 
@@ -431,8 +444,6 @@ static PHP_MINFO_FUNCTION(pcre)
 }
 /* }}} */
 
-PHPAPI zend_class_entry *php_pcre_exception_ce;
-
 /* {{{ PHP_MINIT_FUNCTION(pcre) */
 static PHP_MINIT_FUNCTION(pcre)
 {
@@ -450,7 +461,7 @@ static PHP_MINIT_FUNCTION(pcre)
 
 	php_pcre_version = _pcre2_config_str(PCRE2_CONFIG_VERSION);
 
-	php_pcre_exception_ce = register_class_PregException(zend_ce_exception);
+	php_preg_exception_ce = register_class_PregException(zend_ce_exception);
 
 	register_php_pcre_symbols(module_number);
 
