@@ -23,7 +23,7 @@
 
 #include "php_dns.h"
 
-#define PHP_DNS_NUM_TYPES	12	/* Number of DNS Types Supported by PHP currently */
+#define PHP_DNS_NUM_TYPES	14	/* Number of DNS Types Supported by PHP currently */
 
 #define PHP_DNS_A      0x00000001
 #define PHP_DNS_NS     0x00000002

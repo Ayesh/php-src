@@ -468,6 +468,16 @@ const DNS_AAAA = UNKNOWN;
 const DNS_A6 = UNKNOWN;
 /**
  * @var int
+ * @cvalue PHP_DNS_SVCB
+ */
+const DNS_SVCB = UNKNOWN;
+/**
+ * @var int
+ * @cvalue PHP_DNS_HTTPS
+ */
+const DNS_HTTPS = UNKNOWN;
+/**
+ * @var int
  * @cvalue PHP_DNS_ANY
  */
 const DNS_ANY = UNKNOWN;
