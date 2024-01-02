@@ -108,6 +108,12 @@ extern void __res_ndestroy(res_state statp);
 #ifndef DNS_T_A6
 #define DNS_T_A6	38
 #endif
+#ifndef DNS_T_SVCB
+#define DNS_T_SVCB	64
+#endif
+#ifndef DNS_T_HTTPS
+#define DNS_T_HTTPS	65
+#endif
 #ifndef DNS_T_CAA
 #define DNS_T_CAA	257
 #endif
@@ -406,6 +412,8 @@ PHP_FUNCTION(dns_check_record)
 		else if (zend_string_equals_literal_ci(rectype, "SRV")) type = DNS_T_SRV;
 		else if (zend_string_equals_literal_ci(rectype, "NAPTR")) type = DNS_T_NAPTR;
 		else if (zend_string_equals_literal_ci(rectype, "A6")) type = DNS_T_A6;
+		else if (zend_string_equals_literal_ci(rectype, "SVCB")) type = DNS_T_SVCB;
+		else if (zend_string_equals_literal_ci(rectype, "HTTPS")) type = DNS_T_HTTPS;
 		else {
 			zend_argument_value_error(2, "must be a valid DNS record type");
 			RETURN_THROWS();
@@ -552,6 +560,46 @@ static uint8_t *php_parserr(uint8_t *cp, uint8_t *end, querybuf *answer, int typ
 		case DNS_T_CAA:
 			/* See RFC 6844 for values https://tools.ietf.org/html/rfc6844 */
 			add_assoc_string(subarray, "type", "CAA");
+			// 1 flag byte
+			CHECKCP(1);
+			n = *cp & 0xFF;
+			add_assoc_long(subarray, "flags", n);
+			cp++;
+			// Tag length (1 byte)
+			CHECKCP(1);
+			n = *cp & 0xFF;
+			cp++;
+			CHECKCP(n);
+			add_assoc_stringl(subarray, "tag", (char*)cp, n);
+			cp += n;
+			if ( (size_t) dlen < ((size_t)n) + 2 ) {
+				return NULL;
+			}
+			n = dlen - n - 2;
+			CHECKCP(n);
+			add_assoc_stringl(subarray, "value", (char*)cp, n);
+			cp += n;
+			break;
+		case DNS_T_HTTPS:
+			/* See RFC 9460 for values https://datatracker.ietf.org/doc/rfc9460/ */
+			CHECKCP(3*2);
+            			add_assoc_string(subarray, "type", "SRV");
+            			GETSHORT(n, cp);
+            			add_assoc_long(subarray, "pri", n);
+            			GETSHORT(n, cp);
+            			add_assoc_long(subarray, "weight", n);
+            			GETSHORT(n, cp);
+            			add_assoc_long(subarray, "port", n);
+            			n = dn_expand(answer->qb2, end, cp, name, (sizeof name) - 2);
+            			if (n < 0) {
+            				return NULL;
+            			}
+            			cp += n;
+            			add_assoc_string(subarray, "target", name);
+            			break;
+		case DNS_T_SVCB:
+			/* See RFC 9460 for values https://datatracker.ietf.org/doc/rfc9460/ */
+			add_assoc_string(subarray, "type", "SVCB");
 			// 1 flag byte
 			CHECKCP(1);
 			n = *cp & 0xFF;
@@ -931,6 +979,12 @@ PHP_FUNCTION(dns_get_record)
 				break;
 			case 12:
 				type_to_fetch = type_param&PHP_DNS_CAA ? DNS_T_CAA : 0;
+				break;
+			case 13:
+				type_to_fetch = type_param&PHP_DNS_SVCB ? DNS_T_SVCB : 0;
+				break;
+			case 14:
+				type_to_fetch = type_param&PHP_DNS_HTTPS ? DNS_T_HTTPS : 0;
 				break;
 			case PHP_DNS_NUM_TYPES:
 				store_results = 0;
