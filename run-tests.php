@@ -903,11 +903,7 @@ function save_results(string $output_file, bool $prompt_to_save_results): void
 {
     global $sum_results, $failed_test_summary, $PHP_FAILED_TESTS, $php;
 
-    if (getenv('NO_INTERACTION') || TRAVIS_CI) {
-        return;
-    }
-
-    if ($prompt_to_save_results) {
+    if ($prompt_to_save_results && !getenv('NO_INTERACTION') && !TRAVIS_CI) {
         /* We got failed Tests, offer the user to save a QA report */
         $fp = fopen("php://stdin", "r+");
         if ($sum_results['FAILED'] || $sum_results['BORKED'] || $sum_results['WARNED'] || $sum_results['LEAKED']) {
@@ -3032,8 +3028,8 @@ function get_summary(bool $show_ext_summary): string
 =====================================================================
 TEST RESULT SUMMARY
 ---------------------------------------------------------------------
-Exts skipped    : ' . sprintf('%5d', count($exts_skipped)) . ($exts_skipped ? ' (' . implode(', ', $exts_skipped) . ')' : '') . '
-Exts tested     : ' . sprintf('%5d', count($exts_tested)) . '
+Exts skipped    : ' . sprintf('%5d', $exts_skipped ? count($exts_skipped) : 0) . ($exts_skipped ? ' (' . implode(', ', $exts_skipped) . ')' : '') . '
+Exts tested     : ' . sprintf('%5d', $exts_tested ? count($exts_tested) : 0) . '
 ---------------------------------------------------------------------
 ';
     }
