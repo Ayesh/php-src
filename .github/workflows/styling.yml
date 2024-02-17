@@ -63,6 +63,7 @@ jobs:
           echo "foobar" > format.patch
       - name: 'Upload artifacts'
         uses: actions/upload-artifact@v4
+        id: artifact-upload-step
         with:
           name: 'format.patch'
           path: format.patch
@@ -70,5 +71,5 @@ jobs:
       - name: 'Show summary'
         run: |
           echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-id }}'
-          echo 'Artifact ID is ${{ steps.artifact-upload-step.outputs.artifact-url }}'
+          echo 'Artifact URL is ${{ steps.artifact-upload-step.outputs.artifact-url }}'
           cat 'Run curl ${{ steps.artifact-upload-step.outputs.artifact-url }} | git patch apply' > $GITHUB_STEP_SUMMARY
