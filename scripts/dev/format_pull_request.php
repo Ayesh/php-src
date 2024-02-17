@@ -14,12 +14,12 @@ if ($force !== false) {
     $argv = array_values($argv);
     $argc = count($argv);
 }
-if ($argc !== 2) {
+if ($argc !== 2 || in_array('--help', $argv, true)) {
     ob_start();
     echo "Usage: php {$argv[0]} [diff-uri]\n";
     echo "example:\nphp {$argv[0]} " . escapeshellarg('https://github.com/php/php-src/pull/13401.diff') . "\n";
     fwrite(STDERR, ob_get_clean());
-    exit(1);
+    exit(in_array('--help', $argv, true) === true ? 0 : 1);
 }
 // check if we're already in php-src
 if (is_dir("Zend")) {
