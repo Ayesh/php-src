@@ -582,21 +582,27 @@ static uint8_t *php_parserr(uint8_t *cp, uint8_t *end, querybuf *answer, int typ
 			break;
 		case DNS_T_HTTPS:
 			/* See RFC 9460 for values https://datatracker.ietf.org/doc/rfc9460/ */
-			CHECKCP(3*2);
-            			add_assoc_string(subarray, "type", "SRV");
-            			GETSHORT(n, cp);
-            			add_assoc_long(subarray, "pri", n);
-            			GETSHORT(n, cp);
-            			add_assoc_long(subarray, "weight", n);
-            			GETSHORT(n, cp);
-            			add_assoc_long(subarray, "port", n);
-            			n = dn_expand(answer->qb2, end, cp, name, (sizeof name) - 2);
-            			if (n < 0) {
-            				return NULL;
-            			}
+			add_assoc_string(subarray, "type", "HTTPS");
+
+			CHECKCP(1);
+			add_assoc_long(subarray, "SvcPriority", n);
+
+			GETSHORT(n, cp);
+			add_assoc_stringl(subarray, "TargetName", (char*)cp, n);
+
+			n = *cp & 0xFF;
+			CHECKCP(n);
+
+			cp += n;
+
+			CHECKCP(1);
+            			n = *cp & 0xFF;
+            			cp++;
+            			CHECKCP(n);
+            			add_assoc_stringl(subarray, "SvcParams", (char*)cp, n);
             			cp += n;
-            			add_assoc_string(subarray, "target", name);
-            			break;
+			break;
+
 		case DNS_T_SVCB:
 			/* See RFC 9460 for values https://datatracker.ietf.org/doc/rfc9460/ */
 			add_assoc_string(subarray, "type", "SVCB");
