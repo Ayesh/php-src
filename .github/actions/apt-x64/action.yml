@@ -39,8 +39,6 @@ runs:
           libsqlite3-dev \
           libwebp-dev \
           libonig-dev \
-          libkrb5-dev \
-          libgssapi-krb5-2 \
           libcurl4-openssl-dev \
           libxml2-dev \
           libxslt1-dev \
