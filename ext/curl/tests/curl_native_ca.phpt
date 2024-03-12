@@ -29,7 +29,8 @@ if ($curl_version['version_number'] < 0x074700) {
 
     curl_exec($ch);
     var_dump(curl_getinfo($ch, CURLINFO_SSL_VERIFYRESULT));
-
+    var_dump(ini_get('curl.cainfo'));
 ?>
 --EXPECT--
 int(0)
+dsdsad
