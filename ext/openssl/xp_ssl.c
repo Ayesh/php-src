@@ -63,6 +63,7 @@
 #define STREAM_CRYPTO_METHOD_TLSv1_1       (1<<4)
 #define STREAM_CRYPTO_METHOD_TLSv1_2       (1<<5)
 #define STREAM_CRYPTO_METHOD_TLSv1_3       (1<<6)
+#define STREAM_CRYPTO_METHOD_QUIC          (1<<7)
 
 #ifndef OPENSSL_NO_TLS1_METHOD
 #define HAVE_TLS1 1
@@ -78,6 +79,10 @@
 
 #ifndef OPENSSL_NO_TLS1_3
 #define HAVE_TLS13 1
+#endif
+
+#if OPENSSL_VERSION_NUMBER >= 0x30200000 && !defined(OPENSSL_NO_QUIC)
+#define HAVE_QUIC 1
 #endif
 
 #ifndef OPENSSL_NO_ECDH
@@ -99,7 +104,10 @@
 #else
 #define PHP_OPENSSL_MIN_PROTO_VERSION STREAM_CRYPTO_METHOD_TLSv1_0
 #endif
-#ifdef HAVE_TLS13
+
+#ifdef HAVE_QUIC
+#define PHP_OPENSSL_MAX_PROTO_VERSION STREAM_CRYPTO_METHOD_QUIC
+#elif defined(HAVE_TLS13)
 #define PHP_OPENSSL_MAX_PROTO_VERSION STREAM_CRYPTO_METHOD_TLSv1_3
 #else
 #define PHP_OPENSSL_MAX_PROTO_VERSION STREAM_CRYPTO_METHOD_TLSv1_2
@@ -1020,6 +1028,11 @@ static int php_openssl_get_crypto_method_ctx_flags(int method_flags) /* {{{ */
 		ssl_ctx_options |= SSL_OP_NO_TLSv1_3;
 	}
 #endif
+#ifdef HAVE_QUIC
+	if (!(method_flags & STREAM_CRYPTO_METHOD_QUIC)) {
+		ssl_ctx_options |= OPENSSL_NO_QUIC;
+	}
+#endif
 
 	return ssl_ctx_options;
 }
@@ -1054,6 +1067,10 @@ static inline int php_openssl_get_max_proto_version_flag(int flags) /* {{{ */
 static inline int php_openssl_map_proto_version(int flag) /* {{{ */
 {
 	switch (flag) {
+#ifdef HAVE_QUIC
+		case STREAM_CRYPTO_METHOD_QUIC:
+			return OSSL_QUIC1_VERSION;
+#endif
 #ifdef HAVE_TLS13
 		case STREAM_CRYPTO_METHOD_TLSv1_3:
 			return TLS1_3_VERSION;
@@ -2401,6 +2418,9 @@ static int php_openssl_sockop_set_option(php_stream *stream, int option, int val
 				array_init(&tmp);
 
 				switch (SSL_version(sslsock->ssl_handle)) {
+#ifdef HAVE_QUIC
+					case OSSL_QUIC1_VERSION: proto_str = "QUIC"; break;
+#endif
 #ifdef HAVE_TLS13
 					case TLS1_3_VERSION: proto_str = "TLSv1.3"; break;
 #endif
@@ -2760,6 +2780,16 @@ php_stream *php_openssl_ssl_socket_factory(const char *proto, size_t protolen,
 #else
 		php_error_docref(NULL, E_WARNING,
 			"TLSv1.3 support is not compiled into the OpenSSL library against which PHP is linked");
+		php_stream_close(stream);
+		return NULL;
+#endif
+	} else if (strncmp(proto, "quic", protolen) == 0) {
+#ifdef HAVE_QUIC
+		sslsock->enable_on_connect = 1;
+		sslsock->method = STREAM_CRYPTO_METHOD_QUIC_CLIENT;
+#else
+		php_error_docref(NULL, E_WARNING,
+			"QUIC support is not compiled into the OpenSSL library against which PHP is linked");
 		php_stream_close(stream);
 		return NULL;
 #endif
