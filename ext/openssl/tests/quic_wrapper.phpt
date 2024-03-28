@@ -9,13 +9,15 @@ if (OPENSSL_VERSION_NUMBER < 0x30200000) die("skip QUIC tests require OpenSSL 3.
 --FILE--
 <?php
 
-$flags = STREAM_CLIENT_CONNECT;
-    $ctx = stream_context_create(['ssl' => [
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-    ]]);
+$ctx = stream_context_create([
+'ssl' => [
+    'crypto_method' => STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT
+  ],
+]);
+//$html = file_get_contents('https://github.com', false, $ctx);
+$html = file_get_contents('https://http2.pro/api/v1', context: $ctx);
+var_dump($html);
 
-$client = stream_socket_client("quic://php.watch", $errno, $errstr, 10, $flags, $ctx);
 --EXPECTF--
 resource(%d) of type (stream)
 bool(false)

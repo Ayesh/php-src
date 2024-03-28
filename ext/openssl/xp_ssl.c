@@ -1029,7 +1029,9 @@ static int php_openssl_get_crypto_method_ctx_flags(int method_flags) /* {{{ */
 	}
 #endif
 #ifdef HAVE_QUIC
+	fprintf(stderr, "curl_write() caldsdasdsadsa\n");
 	if (!(method_flags & STREAM_CRYPTO_METHOD_QUIC)) {
+		fprintf(stderr, "curl_write() called\n");
 		ssl_ctx_options |= OPENSSL_NO_QUIC;
 	}
 #endif
