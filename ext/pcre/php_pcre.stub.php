@@ -107,6 +107,8 @@ function preg_match(string $pattern, string $subject, &$matches = null, int $fla
 /** @param array $matches */
 function preg_match_all(string $pattern, string $subject, &$matches = null, int $flags = 0, int $offset = 0): int|false {}
 
+function preg_is_match(string $pattern, string $subject): bool {}
+
 /**
  * @param int $count
  * @return string|array<int|string, string>|null
