@@ -2751,6 +2751,54 @@ last:
 }
 /* }}} */
 
+/* {{{ Split string into an array using a perl-style regular expression as a delimiter */
+PHP_FUNCTION(preg_is_match)
+{
+	zend_string		  *regex;			/* Regular expression */
+	zend_string		  *subject;		/* String to match against */
+	pcre_cache_entry  *pce;			/* Compiled regular expression */
+	int				  count;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STR(regex)
+		Z_PARAM_STR(subject)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if ((pce = pcre_get_compiled_regex_cache(regex)) == NULL) {
+		RETURN_FALSE;
+	}
+
+	pcre2_match_data *match_data;
+
+    char *subject_r = ZSTR_VAL(subject);
+    size_t subject_len = ZSTR_LEN(subject);
+
+    PCRE_G(error_code) = PHP_PCRE_NO_ERROR;
+
+    match_data = pcre2_match_data_create_from_pattern(pce->re, PCRE_G(gctx_zmm));
+
+    /* Execute the regular expression. */
+#ifdef HAVE_PCRE_JIT_SUPPORT
+   	count = pcre2_jit_match(pce->re, (PCRE2_SPTR)subject_r, subject_len, 0, 0, match_data, NULL);
+   	// count = pcre2_match(pce->re, (PCRE2_SPTR)subject_r, subject_len, 0, 0, match_data, NULL);
+#else
+   	count = pcre2_match(pce->re, (PCRE2_SPTR)subject_r, subject_len, 0, 0, match_data, NULL);
+#endif
+
+    pcre2_match_data_free(match_data);
+    if (!match_data) {
+     	PCRE_G(error_code) = PHP_PCRE_INTERNAL_ERROR;
+       	RETURN_FALSE;
+    }
+
+    if (count > 0) {
+        RETURN_TRUE;
+    }
+
+    RETURN_FALSE;
+}
+/* }}} */
+
 /* {{{ Quote regular expression characters plus an optional character */
 PHP_FUNCTION(preg_quote)
 {
