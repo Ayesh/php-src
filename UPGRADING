@@ -56,6 +56,10 @@ PHP 8.5 UPGRADE NOTES
 4. Deprecated Functionality
 ========================================
 
+- Standard:
+  . Calling class_exists() with an enum name is deprecated in favor of the
+    enum_exists() function.
+
 ========================================
 5. Changed Functions
 ========================================
