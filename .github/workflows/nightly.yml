@@ -436,7 +436,7 @@ jobs:
         uses: ./.github/actions/install-linux
       - name: Setup
         run: |
-          sudo service mysql start
+          sudo systemctl start mysql.service || sudo systemctl status mysql.service
           mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS test"
           mysql -uroot -proot -e "SET GLOBAL local_infile = true"
       - name: Enable Opcache
@@ -747,7 +747,7 @@ jobs:
       - name: Setup
         run: |
           set -x
-          sudo service mysql start
+          sudo systemctl start mysql.service || sudo systemctl status mysql.service
           mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS test"
           # Ensure local_infile tests can run.
           mysql -uroot -proot -e "SET GLOBAL local_infile = true"
@@ -791,7 +791,7 @@ jobs:
           sudo apt install bison re2c
       - name: Setup
         run: |
-          sudo service mysql start
+          sudo systemctl start mysql.service || sudo systemctl status mysql.service
           mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS test"
           # Ensure local_infile tests can run.
           mysql -uroot -proot -e "SET GLOBAL local_infile = true"
