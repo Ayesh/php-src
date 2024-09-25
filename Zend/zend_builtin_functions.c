@@ -1062,6 +1062,9 @@ static inline void _class_exists_impl(zval *return_value, zend_string *name, boo
 	if (ZSTR_HAS_CE_CACHE(name)) {
 		ce = ZSTR_GET_CE_CACHE(name);
 		if (ce) {
+			if (flags == ZEND_ACC_LINKED && ce->ce_flags & ZEND_ACC_ENUM) {
+				zend_error(E_DEPRECATED, "using class_exists() for enums is deprecated, triggerred for calling class_exists() for enum \"%s\". Use enum_exists() instead", ZSTR_VAL(ce->name));
+			}
 			RETURN_BOOL(((ce->ce_flags & flags) == flags) && !(ce->ce_flags & skip_flags));
 		}
 	}
@@ -1082,6 +1085,9 @@ static inline void _class_exists_impl(zval *return_value, zend_string *name, boo
 	}
 
 	if (ce) {
+		if (flags == ZEND_ACC_LINKED && ce->ce_flags & ZEND_ACC_ENUM) {
+    		zend_error(E_DEPRECATED, "using class_exists() for enums is deprecated, triggerred for calling class_exists() for enum \"%s\". Use enum_exists() instead", ZSTR_VAL(ce->name));
+    	}
 		RETURN_BOOL(((ce->ce_flags & flags) == flags) && !(ce->ce_flags & skip_flags));
 	} else {
 		RETURN_FALSE;

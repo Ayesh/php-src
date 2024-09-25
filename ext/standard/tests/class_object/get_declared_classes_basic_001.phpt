@@ -9,7 +9,7 @@ echo "\n-- Testing get_declared_classes() function with Zero arguments --\n";
 var_dump(get_declared_classes());
 
 foreach (get_declared_classes() as $class) {
-    if (!class_exists($class)) {
+    if (!enum_exists($class) && !class_exists($class)) {
         echo "Error: $class is not a valid class.\n";
     }
 }
