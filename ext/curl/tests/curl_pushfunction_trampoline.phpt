@@ -2,7 +2,6 @@
 Test trampoline for curl option CURLMOPT_PUSHFUNCTION
 --EXTENSIONS--
 curl
---XLEAK--
 --SKIPIF--
 <?php
 include 'skipif-nocaddy.inc';
