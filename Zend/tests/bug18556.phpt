@@ -23,7 +23,7 @@ echo "\n";
 setlocale(LC_ALL, "tr_TR.utf8");
 foreach(get_declared_classes() as $class)
 {
-    if(!class_exists($class))
+    if(!enum_exists($class) && !class_exists($class))
         echo "$class No Longer Exists!\n";
 
 }
