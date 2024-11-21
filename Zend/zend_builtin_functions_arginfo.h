@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 3dbc84896823c9aaa9ac8aeef8841266920c3e50 */
+ * Stub hash: 1140e967f646633613a1640f2e16c99231830b48 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_exit, 0, 0, IS_NEVER, 0)
 	ZEND_ARG_TYPE_MASK(0, status, MAY_BE_STRING|MAY_BE_LONG, "0")
@@ -119,6 +119,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_enum_exists, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, autoload, _IS_BOOL, 0, "true")
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_symbol_exists, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, symbol, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, autoload, _IS_BOOL, 0, "true")
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_function_exists, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, function, IS_STRING, 0)
 ZEND_END_ARG_INFO()
@@ -159,6 +164,8 @@ ZEND_END_ARG_INFO()
 #define arginfo_get_declared_traits arginfo_func_get_args
 
 #define arginfo_get_declared_interfaces arginfo_func_get_args
+
+#define arginfo_get_declared_symbols arginfo_func_get_args
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_get_defined_functions, 0, 0, IS_ARRAY, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, exclude_disabled, _IS_BOOL, 0, "true")
@@ -266,6 +273,7 @@ ZEND_FUNCTION(class_exists);
 ZEND_FUNCTION(interface_exists);
 ZEND_FUNCTION(trait_exists);
 ZEND_FUNCTION(enum_exists);
+ZEND_FUNCTION(symbol_exists);
 ZEND_FUNCTION(function_exists);
 ZEND_FUNCTION(class_alias);
 ZEND_FUNCTION(get_included_files);
@@ -277,6 +285,7 @@ ZEND_FUNCTION(restore_exception_handler);
 ZEND_FUNCTION(get_declared_classes);
 ZEND_FUNCTION(get_declared_traits);
 ZEND_FUNCTION(get_declared_interfaces);
+ZEND_FUNCTION(get_declared_symbols);
 ZEND_FUNCTION(get_defined_functions);
 ZEND_FUNCTION(get_defined_vars);
 ZEND_FUNCTION(get_resource_type);
@@ -328,6 +337,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(interface_exists, arginfo_interface_exists)
 	ZEND_FE(trait_exists, arginfo_trait_exists)
 	ZEND_FE(enum_exists, arginfo_enum_exists)
+	ZEND_FE(symbol_exists, arginfo_symbol_exists)
 	ZEND_FE(function_exists, arginfo_function_exists)
 	ZEND_FE(class_alias, arginfo_class_alias)
 	ZEND_FE(get_included_files, arginfo_get_included_files)
@@ -341,6 +351,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(get_declared_classes, arginfo_get_declared_classes)
 	ZEND_FE(get_declared_traits, arginfo_get_declared_traits)
 	ZEND_FE(get_declared_interfaces, arginfo_get_declared_interfaces)
+	ZEND_FE(get_declared_symbols, arginfo_get_declared_symbols)
 	ZEND_FE(get_defined_functions, arginfo_get_defined_functions)
 	ZEND_FE(get_defined_vars, arginfo_get_defined_vars)
 	ZEND_FE(get_resource_type, arginfo_get_resource_type)

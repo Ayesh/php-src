@@ -91,6 +91,8 @@ function trait_exists(string $trait, bool $autoload = true): bool {}
 
 function enum_exists(string $enum, bool $autoload = true): bool {}
 
+function symbol_exists(string $symbol, bool $autoload = true): bool {}
+
 function function_exists(string $function): bool {}
 
 function class_alias(string $class, string $alias, bool $autoload = true): bool {}
@@ -139,6 +141,12 @@ function get_declared_traits(): array {}
  * @refcount 1
  */
 function get_declared_interfaces(): array {}
+
+/**
+ * @return array<int, string>
+ * @refcount 1
+ */
+function get_declared_symbols(): array {}
 
 /**
  * @return array<string, array>
