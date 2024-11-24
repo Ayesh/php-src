@@ -1,9 +1,5 @@
 --TEST--
 Test disk_free_space and its alias diskfreespace() functions : basic functionality
---SKIPIF--
-<?php
-if (getenv('CIRRUS_CI')) die('skip Inaccurate on Cirrus');
-?>
 --INI--
 memory_limit=32M
 --FILE--
