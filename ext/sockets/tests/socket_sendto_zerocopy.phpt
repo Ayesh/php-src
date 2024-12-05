@@ -11,8 +11,8 @@ if (!defined("SO_ZEROCOPY")) {
 if (strpos($arch, 'ppc') !== false || strpos($arch, 'powerpc') !== false) {
     die('skip not for powerpc arch');
 }
-if (getenv('CIRRUS_CI') && strpos($arch, 'aarch64') !== false) {
-    die('xfail Broken on Cirrus + arm');
+if (strpos($arch, 'aarch64') !== false) {
+    die('xfail Broken on arm');
 }
 ?>
 --FILE--

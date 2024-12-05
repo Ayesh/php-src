@@ -9,8 +9,6 @@ on:
       - '**/README.*'
       - CONTRIBUTING.md
       - CODING_STANDARDS.md
-      - .cirrus.yml
-      - .circleci/**
     branches:
       - PHP-8.1
       - PHP-8.2
