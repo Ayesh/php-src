@@ -1,8 +1,14 @@
 name: Setup Caddy server
+inputs:
+  arch:
+    default: 'LINUX_X64'
+    required: true
+    description: "Set LINUX_X64 or WINDOWS (which are job names of the push.yml workflows)"
 runs:
   using: composite
   steps:
     - shell: bash
+      if: inputs.arch == 'LINUX_X64'
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
@@ -10,4 +16,14 @@ runs:
         gh release -R caddyserver/caddy download --pattern 'caddy_*_linux_amd64.tar.gz' -O - | sudo tar -xz -C /usr/bin caddy
         sudo chmod +x /usr/bin/caddy
         sudo caddy start --config ext/curl/tests/Caddyfile
+      continue-on-error: true
+    - shell: pwsh
+      if: inputs.arch == 'WINDOWS'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh release -R caddyserver/caddy download --pattern 'caddy_*_windows_amd64.zip' --output caddy.zip
+        Expand-Archive -Path caddy.zip -DestinationPath ./build/caddy -Force
+        ./build/caddy/caddy.exe trust
+        ./build/caddy/caddy.exe start --config ext/curl/tests/Caddyfile
       continue-on-error: true
