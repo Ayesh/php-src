@@ -98,6 +98,8 @@ jobs:
         uses: ./.github/actions/setup-mssql
       - name: Setup Caddy server
         uses: ./.github/actions/setup-caddy
+        with:
+          arch: LINUX_X64
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -254,6 +256,10 @@ jobs:
         run: git config --global core.autocrlf false && git config --global core.eol lf
       - name: git checkout
         uses: actions/checkout@v4
+      - name: Setup Caddy server
+        uses: ./.github/actions/setup-caddy
+        with:
+          arch: WINDOWS
       - name: Setup
         uses: ./.github/actions/setup-windows
       - name: Build
