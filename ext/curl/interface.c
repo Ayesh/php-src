@@ -1164,6 +1164,15 @@ static void _php_curl_set_default_options(php_curl *ch)
 	if (cainfo && cainfo[0] != '\0') {
 		curl_easy_setopt(ch->cp, CURLOPT_CAINFO, cainfo);
 	}
+#if LIBCURL_VERSION_NUM >= 0x075400 /* Available since 7.71.0 */
+	/* Curl supports falling back to the native/OS root certificates
+	 * if cainfo is not provided. When the php.ini cainfo is empty,
+	 * setting CURLSSLOPT_NATIVE_CA enables this behavior.
+	 */
+	else {
+		curl_easy_setopt(ch->cp, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+	}
+#endif
 
 #ifdef ZTS
 	curl_easy_setopt(ch->cp, CURLOPT_NOSIGNAL, 1);
