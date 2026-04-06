@@ -131,6 +131,10 @@ PHP 8.6 UPGRADE NOTES
     when not null, and on failure, gives the error code (one of the EAI_*
     constants).
 
+- Standard:
+  . pathinfo() now raises a ValueError when an invalid $flag argument
+    value is passed.
+
 - Zip:
   . ZipArchive::extractTo now raises a TypeError for the
     files argument if one or more of the entries is not

@@ -146,6 +146,8 @@ PHP                                                                        NEWS
     (ndossche)
   . Add array size maximum to array_diff(). (ndossche)
   . Add enum SortDirection. (timwolla)
+  . pathinfo() raises a ValueError with an invalid $flags argument.
+    (David Carlier)
 
 - Streams:
   . Added so_keepalive, tcp_keepidle, tcp_keepintvl and tcp_keepcnt stream
