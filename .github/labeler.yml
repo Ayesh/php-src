@@ -23,10 +23,10 @@
 "Category: CI":
   - changed-files:
       - any-glob-to-any-file:
-          - .circleci/**
-          - .github/**
-          - '!.github/lsan-suppressions.txt'
-          - '!.github/ISSUE_TEMPLATE/**'
+        - .circleci/**
+        - .github/**
+        - '!.github/lsan-suppressions.txt'
+        - '!.github/ISSUE_TEMPLATE/**'
 
 "Extension: bcmath":
   - changed-files:
