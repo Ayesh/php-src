@@ -25,6 +25,7 @@
       - any-glob-to-any-file:
         - .circleci/**
         - .github/**
+      - all-globs-to-all-files:
         - '!.github/lsan-suppressions.txt'
         - '!.github/ISSUE_TEMPLATE/**'
 
