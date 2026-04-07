@@ -2,6 +2,7 @@
 
 /** @generate-class-entries */
 
+
 namespace
 {
     /** @refcount 1 */
