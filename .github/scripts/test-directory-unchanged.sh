@@ -6,6 +6,7 @@ cd "$(dirname "$0")/../.."
 
 dir="$1"
 
+
 # notify git about untracked (except ignored) files
 git add -N "$dir"
 

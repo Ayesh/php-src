@@ -1844,6 +1844,7 @@ function array_diff_assoc(array $array, array ...$arrays): array {}
  */
 function array_diff_uassoc(array $array, ...$rest): array {}
 
+
 /**
  * @param array|callable $rest
  * @refcount 1
